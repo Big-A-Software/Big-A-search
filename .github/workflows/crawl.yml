@@ -1,0 +1,47 @@
+name: Big-A Search Crawler
+
+on:
+  # Allows us to run the crawler manually from GitHub.
+  workflow_dispatch:
+
+  # Automatically crawl once every hour.
+  schedule:
+    - cron: "0 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # Download the Big-A Search repository.
+      - name: Get Big-A Search
+        uses: actions/checkout@v4
+
+      # Install Node.js so crawler.js can run.
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Run the Big-A crawler.
+      - name: Crawl websites
+        run: node crawler/crawler.js
+
+      # Save the new search index back to GitHub.
+      - name: Save search index
+        run: |
+          git config user.name "Big-A Search Crawler"
+          git config user.email "big-a-search-crawler@users.noreply.github.com"
+
+          git add data/index.json
+
+          if git diff --cached --quiet; then
+            echo "The search index has not changed."
+          else
+            git commit -m "Update Big-A Search index"
+            git push
+          fi
