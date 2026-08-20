@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Big-A Search</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #202124;
+      background: white;
+    }
+
+    .search-page {
+      min-height: 78vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      width: min(700px, 90vw);
+      height: auto;
+      margin-bottom: 28px;
+    }
+
+    .search-container {
+      width: min(700px, 92vw);
+    }
+
+    .search-form {
+      display: flex;
+      width: 100%;
+      border: 1px solid #dfe1e5;
+      border-radius: 24px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .search-input {
+      flex: 1;
+      border: 0;
+      outline: none;
+      padding: 14px 18px;
+      font-size: 17px;
+    }
+
+    .search-button {
+      border: 0;
+      background: white;
+      padding: 0 18px;
+      font-size: 19px;
+      cursor: pointer;
+    }
+
+    .results {
+      width: min(700px, 92vw);
+      margin-top: 35px;
+    }
+
+    .result {
+      margin-bottom: 28px;
+    }
+
+    .result-title {
+      font-size: 20px;
+      text-decoration: none;
+      color: #1a0dab;
+    }
+
+    .result-url {
+      color: #188038;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .result-description {
+      color: #4d5156;
+      line-height: 1.5;
+    }
+
+    .information {
+      border-top: 1px solid #e5e5e5;
+      text-align: center;
+      padding: 80px 25px 100px;
+      background: #fafafa;
+    }
+
+    .information h2 {
+      font-size: 32px;
+      margin: 0 0 15px;
+      font-weight: 500;
+    }
+
+    .information p {
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #5f6368;
+    }
+
+    .count {
+      color: #0b57d0;
+      font-weight: bold;
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #70757a;
+      font-size: 14px;
+      border-top: 1px solid #e5e5e5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="search-page">
+
+    <img
+      class="logo"
+      src="big-a logo.jpg"
+      alt="Big-A"
+    >
+
+    <div class="search-container">
+      <div class="search-form">
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Search Big-A"
+        >
+
+        <button
+          id="searchButton"
+          class="search-button"
+          type="button"
+        >
+          🔍
+        </button>
+      </div>
+    </div>
+
+    <div id="results" class="results"></div>
+
+  </main>
+
+  <section class="information">
+    <h2><span class="count">50+</span> websites included so far</h2>
+
+    <p>
+      Big-A Search searches a growing collection of selected websites.
+      We're continuing to add more websites to make Big-A broader,
+      more useful, and better at finding what you're looking for.
+    </p>
+  </section>
+
+  <footer>
+    Copyright Big-A 2024-2026
+  </footer>
+
+
+  <script>
+    async function searchBigA() {
+
+      const input =
+        document.getElementById("searchInput");
+
+      const resultsArea =
+        document.getElementById("results");
+
+      const query =
+        input.value.toLowerCase().trim();
+
+
+      resultsArea.innerHTML = "";
+
+
+      if (!query) {
+        return;
+      }
+
+
+      const response =
+        await fetch("data/index.json");
+
+      const pages =
+        await response.json();
+
+
+      const matches =
+        pages.filter(function(page) {
+
+          const searchableText =
+            page.title + " " +
+            page.description + " " +
+            page.url;
+
+          return searchableText
+            .toLowerCase()
+            .includes(query);
+
+        });
+
+
+      if (matches.length === 0) {
+
+        resultsArea.textContent =
+          "No results found.";
+
+        return;
+      }
+
+
+      matches.forEach(function(page) {
+
+        const result =
+          document.createElement("div");
+
+        result.className = "result";
+
+
+        const title =
+          document.createElement("a");
+
+        title.className = "result-title";
+        title.href = page.url;
+        title.textContent = page.title;
+
+
+        const url =
+          document.createElement("div");
+
+        url.className = "result-url";
+        url.textContent = page.url;
+
+
+        const description =
+          document.createElement("div");
+
+        description.className =
+          "result-description";
+
+        description.textContent =
+          page.description;
+
+
+        result.appendChild(title);
+        result.appendChild(url);
+        result.appendChild(description);
+
+        resultsArea.appendChild(result);
+
+      });
+
+    }
+
+
+    document
+      .getElementById("searchButton")
+      .addEventListener("click", searchBigA);
+
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          searchBigA();
+        }
+
+      });
+  </script>
+
+</body>
+
+</html>
