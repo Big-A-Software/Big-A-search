@@ -2,40 +2,811 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Big-A Search — Under Construction</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Big-A Search</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #202124;
+      background: white;
+    }
+
+    /* TOP NAVIGATION */
+
+    .top-nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: 22px;
+      padding: 16px 28px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .top-nav button {
+      border: 0;
+      background: none;
+      color: #0b57d0;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .top-nav button:hover {
+      text-decoration: underline;
+    }
+
+
+    /* BIG-A ONLINE CELEBRATION */
+
+    .launch-banner {
+      text-align: center;
+      padding: 35px 20px;
+      background: #f8f9fa;
+      border-bottom: 1px solid #dadce0;
+    }
+
+    .launch-symbol {
+      font-size: 46px;
+      margin-bottom: 8px;
+    }
+
+    .launch-banner h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    .launch-banner p {
+      margin: 0 0 20px;
+      color: #5f6368;
+      font-size: 17px;
+    }
+
+    .event-button {
+      border: 1px solid #dadce0;
+      border-radius: 7px;
+      padding: 11px 19px;
+      background: white;
+      color: #0b57d0;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .event-button:hover {
+      background: #f1f3f4;
+    }
+
+
+    /* SEARCH */
+
+    .search-page {
+      min-height: 68vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .logo {
+      width: min(700px, 90vw);
+      height: auto;
+      margin-bottom: 28px;
+    }
+
+    .search-container {
+      width: min(700px, 92vw);
+    }
+
+    .search-form {
+      display: flex;
+      width: 100%;
+      border: 1px solid #dfe1e5;
+      border-radius: 24px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .search-form:hover {
+      box-shadow: 0 1px 6px rgba(32, 33, 36, 0.18);
+    }
+
+    .search-input {
+      flex: 1;
+      border: 0;
+      outline: none;
+      padding: 14px 18px;
+      font-size: 17px;
+    }
+
+    .search-button {
+      border: 0;
+      background: white;
+      padding: 0 18px;
+      font-size: 19px;
+      cursor: pointer;
+    }
+
+
+    /* RESULTS */
+
+    .results {
+      width: min(700px, 92vw);
+      margin-top: 35px;
+    }
+
+    .result {
+      margin-bottom: 28px;
+    }
+
+    .result-title {
+      font-size: 20px;
+      text-decoration: none;
+      color: #1a0dab;
+    }
+
+    .result-title:hover {
+      text-decoration: underline;
+    }
+
+    .result-url {
+      color: #188038;
+      margin: 4px 0;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .result-description {
+      color: #4d5156;
+      line-height: 1.5;
+    }
+
+
+    /* INFORMATION */
+
+    .information {
+      border-top: 1px solid #e5e5e5;
+      text-align: center;
+      padding: 80px 25px 90px;
+      background: #fafafa;
+    }
+
+    .information h2 {
+      font-size: 32px;
+      margin: 0 0 15px;
+      font-weight: 500;
+    }
+
+    .information p {
+      max-width: 650px;
+      margin: 0 auto;
+      font-size: 18px;
+      line-height: 1.6;
+      color: #5f6368;
+    }
+
+    .count {
+      color: #0b57d0;
+      font-weight: bold;
+    }
+
+
+    /* FOOTER */
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #70757a;
+      font-size: 14px;
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .footer-buttons {
+      margin-bottom: 16px;
+    }
+
+    .footer-button {
+      border: 0;
+      background: none;
+      color: #0b57d0;
+      cursor: pointer;
+      font-size: 14px;
+      margin: 0 10px;
+    }
+
+    .footer-button:hover {
+      text-decoration: underline;
+    }
+
+
+    /* POPUPS */
+
+    .modal-background {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 20px;
+    }
+
+    .modal {
+      background: white;
+      max-width: 650px;
+      max-height: 85vh;
+      overflow-y: auto;
+      margin: 6vh auto;
+      padding: 32px;
+      border-radius: 10px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      font-size: 26px;
+    }
+
+    .modal p,
+    .modal li {
+      line-height: 1.6;
+    }
+
+    .modal code,
+    .modal pre {
+      background: #f1f3f4;
+      border-radius: 5px;
+    }
+
+    .modal code {
+      padding: 3px 6px;
+    }
+
+    .modal pre {
+      padding: 15px;
+      overflow-x: auto;
+    }
+
+    .close-button {
+      margin-top: 20px;
+      padding: 9px 17px;
+      border: 1px solid #dadce0;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .close-button:hover {
+      background: #f1f3f4;
+    }
+
+    .github-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 11px 18px;
+      border-radius: 6px;
+      background: #0b57d0;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .github-button:hover {
+      background: #0842a0;
+    }
+
+  </style>
 </head>
+
 
 <body>
 
-    <h1>Big-A Search</h1>
+  <!-- TOP MENU -->
 
-    <h2>🚧 Under Construction 🚧</h2>
+  <nav class="top-nav">
+
+    <button onclick="openModal('aboutModal')">
+      About
+    </button>
+
+    <button onclick="openModal('addWebsiteModal')">
+      Add a Website
+    </button>
+
+  </nav>
+
+
+  <!-- LAUNCH CELEBRATION -->
+
+  <section class="launch-banner">
+
+    <div class="launch-symbol">
+      🎉
+    </div>
+
+    <h1>Big-A Search Is Back Online!</h1>
 
     <p>
-        Big-A Search is currently undergoing a major rebuild.
+      A new independent Big-A Search is now operating.
     </p>
 
-    <p>
-        We're replacing our previous Google-powered search system with
-        a new independent search engine developed by Big-A.
-    </p>
+    <button
+      class="event-button"
+      onclick="openModal('eventModal')">
+      Info About This Event
+    </button>
+
+  </section>
+
+
+  <!-- BIG-A SEARCH -->
+
+  <main class="search-page">
+
+    <img
+      class="logo"
+      src="big-a logo.jpg"
+      alt="Big-A Search"
+    >
+
+    <div class="search-container">
+
+      <div class="search-form">
+
+        <input
+          id="searchInput"
+          class="search-input"
+          type="text"
+          placeholder="Search Big-A"
+        >
+
+        <button
+          id="searchButton"
+          class="search-button"
+          type="button"
+          aria-label="Search">
+          🔍
+        </button>
+
+      </div>
+
+    </div>
+
+    <div id="results" class="results"></div>
+
+  </main>
+
+
+  <!-- SITE INFORMATION -->
+
+  <section class="information">
+
+    <h2>
+      <span class="count">200+</span>
+      websites included so far
+    </h2>
 
     <p>
-        The new Big-A Search will have its own web crawler, search index,
-        and search system. It will search a growing collection of websites
-        selected for inclusion in Big-A Search.
+      Big-A Search searches a growing collection of selected websites.
+      More websites are continually being added to make Big-A broader
+      and more useful.
     </p>
 
-    <p>
+  </section>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-buttons">
+
+      <button
+        class="footer-button"
+        onclick="openModal('aboutModal')">
+        About
+      </button>
+
+      <button
+        class="footer-button"
+        onclick="openModal('addWebsiteModal')">
+        Add a Website
+      </button>
+
+      <button
+        class="footer-button"
+        onclick="openModal('licenseModal')">
+        License
+      </button>
+
+    </div>
+
+    Copyright Big-A 2024-2026
+
+  </footer>
+
+
+  <!-- LAUNCH EVENT POPUP -->
+
+  <div id="eventModal" class="modal-background">
+
+    <div class="modal">
+
+      <h2>🎉 Big-A Search Is Back Online!</h2>
+
+      <p>
+        This marks a major change for Big-A Search.
+      </p>
+
+      <p>
+        The previous version of Big-A Search used Google Programmable
+        Search Engine.
+      </p>
+
+      <p>
+        Big-A is now developing and operating its own search system.
+        Big-A Search maintains its own list of websites, crawls selected
+        pages, builds a search index, and searches that index using
+        Big-A's own code.
+      </p>
+
+      <p>
+        This gives Big-A Search much greater control over what websites
+        are included and how the search engine develops.
+      </p>
+
+      <p>
+        Big-A Search is also free and open-source software.
+      </p>
+
+      <button
+        class="close-button"
+        onclick="closeModal('eventModal')">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ABOUT POPUP -->
+
+  <div id="aboutModal" class="modal-background">
+
+    <div class="modal">
+
+      <h2>About Big-A Search</h2>
+
+      <p>
+        Big-A Search is a free and open-source search engine developed
+        by Big-A.
+      </p>
+
+      <p>
+        Big-A Search is one of the projects developed by Big-A.
+      </p>
+
+      <p>
+        Rather than attempting to search every website on the Internet,
+        Big-A Search focuses on a selected and growing collection of
+        websites.
+      </p>
+
+      <p>
+        Its source code is designed to remain straightforward and
+        understandable so people can examine, modify, learn from,
+        and contribute to the project.
+      </p>
+
+      <button
+        class="close-button"
+        onclick="closeModal('aboutModal')">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ADD WEBSITE POPUP -->
+
+  <div id="addWebsiteModal" class="modal-background">
+
+    <div class="modal">
+
+      <h2>Add a Website to Big-A Search</h2>
+
+      <p>
+        Big-A Search's website list is maintained publicly on GitHub.
+      </p>
+
+      <p>
+        Websites are stored in:
+      </p>
+
+      <p>
+        <code>data/sites.json</code>
+      </p>
+
+      <p>
+        Add the site's main domain name. Do not add an individual page.
+      </p>
+
+      <p>Example:</p>
+
+      <pre><code>[
+  "softpedia.com",
+  "amazon.com",
+  "hp.com",
+  "example.com"
+]</code></pre>
+
+      <p>
+        Each domain must be inside quotation marks.
+        Put a comma after every entry except the final entry.
+      </p>
+
+      <p>
+        Big-A may crawl pages belonging to the listed domain and its
+        subdomains according to Big-A's crawler rules.
+      </p>
+
+      <p>
+        Submit the change through GitHub so it can be reviewed before
+        becoming part of Big-A Search.
+      </p>
+
+      <a
+        class="github-button"
+        href="https://github.com/Big-A-Software/Big-A-search/blob/main/data/sites.json"
+        target="_blank"
+        rel="noopener noreferrer">
+        Add a Website on GitHub
+      </a>
+
+      <br>
+
+      <button
+        class="close-button"
+        onclick="closeModal('addWebsiteModal')">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- LICENSE POPUP -->
+
+  <div id="licenseModal" class="modal-background">
+
+    <div class="modal">
+
+      <h2>Big-A Search License</h2>
+
+      <p>
         Big-A Search is free and open-source software licensed under
-        the Apache License 2.0.
-    </p>
+        the Apache License, Version 2.0.
+      </p>
 
-    <p>
-        <strong>Please check back soon!</strong>
-    </p>
+      <p>
+        The Apache License permits people to use, copy, modify, and
+        redistribute Big-A Search, including modified versions, under
+        the terms of the license.
+      </p>
+
+      <p>
+        Applicable copyright, license, attribution, and notice
+        requirements must be preserved as required by Apache 2.0.
+      </p>
+
+      <p>
+        See the <code>LICENSE</code> file in the Big-A Search GitHub
+        repository for the complete license.
+      </p>
+
+      <button
+        class="close-button"
+        onclick="closeModal('licenseModal')">
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+     * BIG-A SEARCH
+     */
+
+    async function searchBigA() {
+
+      const input =
+        document.getElementById("searchInput");
+
+      const resultsArea =
+        document.getElementById("results");
+
+      const query =
+        input.value.toLowerCase().trim();
+
+
+      resultsArea.innerHTML = "";
+
+
+      if (!query) {
+        return;
+      }
+
+
+      try {
+
+        const response =
+          await fetch("data/index.json");
+
+
+        if (!response.ok) {
+
+          resultsArea.textContent =
+            "Big-A Search could not load the search index.";
+
+          return;
+
+        }
+
+
+        const pages =
+          await response.json();
+
+
+        const matches =
+          pages.filter(function(page) {
+
+            const searchableText =
+              page.title + " " +
+              page.description + " " +
+              page.url;
+
+            return searchableText
+              .toLowerCase()
+              .includes(query);
+
+          });
+
+
+        if (matches.length === 0) {
+
+          resultsArea.textContent =
+            "No results found.";
+
+          return;
+
+        }
+
+
+        matches.forEach(function(page) {
+
+          const result =
+            document.createElement("div");
+
+          result.className = "result";
+
+
+          const title =
+            document.createElement("a");
+
+          title.className = "result-title";
+          title.href = page.url;
+          title.textContent = page.title;
+
+
+          const url =
+            document.createElement("div");
+
+          url.className = "result-url";
+          url.textContent = page.url;
+
+
+          const description =
+            document.createElement("div");
+
+          description.className =
+            "result-description";
+
+          description.textContent =
+            page.description;
+
+
+          result.appendChild(title);
+          result.appendChild(url);
+          result.appendChild(description);
+
+          resultsArea.appendChild(result);
+
+        });
+
+
+      } catch (error) {
+
+        resultsArea.textContent =
+          "Big-A Search encountered an error.";
+
+      }
+
+    }
+
+
+    document
+      .getElementById("searchButton")
+      .addEventListener("click", searchBigA);
+
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+          searchBigA();
+        }
+
+      });
+
+
+    /*
+     * POPUP WINDOWS
+     */
+
+    function openModal(id) {
+
+      document
+        .getElementById(id)
+        .style.display = "block";
+
+    }
+
+
+    function closeModal(id) {
+
+      document
+        .getElementById(id)
+        .style.display = "none";
+
+    }
+
+
+    /*
+     * Clicking outside a popup closes it.
+     */
+
+    window.addEventListener("click", function(event) {
+
+      if (
+        event.target.classList.contains(
+          "modal-background"
+        )
+      ) {
+
+        event.target.style.display = "none";
+
+      }
+
+    });
+
+  </script>
 
 </body>
 
