@@ -3,58 +3,38 @@
  *
  * Copyright 2024-2026 Big-A
  * Licensed under the Apache License, Version 2.0.
- *
- * Big-A Search crawls websites listed in data/sites.json
- * and creates data/index.json.
  */
 
 const fs = require("fs");
 
-
-// Maximum number of pages to crawl from each website.
-// We are starting small while Big-A is being tested.
 const MAX_PAGES_PER_SITE = 25;
+const USER_AGENT = "Big-A-Search-Crawler";
 
-
-// Load Big-A's website list.
 const websites = JSON.parse(
     fs.readFileSync("data/sites.json", "utf8")
 );
 
-
-// This will become Big-A's search index.
 const searchIndex = [];
-
-
-// Keep track of pages we have already visited.
 const visitedPages = new Set();
 
 
 /*
- * Check whether a URL belongs to an approved domain.
+ * Does this URL belong to this approved domain?
  *
- * If "hp.com" is approved, these are allowed:
- *
- * hp.com
- * www.hp.com
- * support.hp.com
- *
- * But example.com is not allowed.
+ * hp.com allows:
+ *   hp.com
+ *   www.hp.com
+ *   support.hp.com
  */
 function belongsToDomain(url, domain) {
-
     try {
-
-        const hostname =
-            new URL(url).hostname.toLowerCase();
-
+        const hostname = new URL(url).hostname.toLowerCase();
         domain = domain.toLowerCase();
 
         return (
             hostname === domain ||
             hostname.endsWith("." + domain)
         );
-
     } catch {
         return false;
     }
@@ -62,18 +42,9 @@ function belongsToDomain(url, domain) {
 
 
 /*
- * Turn a relative link into a complete URL.
- *
- * Example:
- *
- * /downloads/
- *
- * becomes:
- *
- * https://softpedia.com/downloads/
+ * Convert links such as "/downloads" into complete URLs.
  */
 function makeAbsoluteURL(link, currentPage) {
-
     try {
         return new URL(link, currentPage).href;
     } catch {
@@ -83,10 +54,121 @@ function makeAbsoluteURL(link, currentPage) {
 
 
 /*
- * Find links inside a webpage.
+ * Read robots.txt for a particular host.
+ */
+async function getRobotsRules(pageURL) {
+    try {
+        const page = new URL(pageURL);
+
+        const robotsURL =
+            page.origin + "/robots.txt";
+
+        const response = await fetch(robotsURL, {
+            headers: {
+                "User-Agent": USER_AGENT
+            }
+        });
+
+        if (!response.ok) {
+            return [];
+        }
+
+        const robotsText = await response.text();
+
+        return readRobotsFile(robotsText);
+
+    } catch {
+        return [];
+    }
+}
+
+
+/*
+ * Read the sections of robots.txt that apply to Big-A
+ * or to all crawlers (*).
+ */
+function readRobotsFile(text) {
+    const lines = text.split(/\r?\n/);
+
+    const rules = [];
+
+    let appliesToBigA = false;
+
+    for (let line of lines) {
+
+        // Remove comments.
+        line = line.split("#")[0].trim();
+
+        if (!line) {
+            continue;
+        }
+
+        const separator = line.indexOf(":");
+
+        if (separator === -1) {
+            continue;
+        }
+
+        const command =
+            line.substring(0, separator)
+                .trim()
+                .toLowerCase();
+
+        const value =
+            line.substring(separator + 1)
+                .trim();
+
+
+        if (command === "user-agent") {
+
+            const agent = value.toLowerCase();
+
+            appliesToBigA =
+                agent === "*" ||
+                agent.includes("big-a-search-crawler");
+
+        }
+
+
+        if (
+            appliesToBigA &&
+            command === "disallow" &&
+            value !== ""
+        ) {
+            rules.push(value);
+        }
+    }
+
+    return rules;
+}
+
+
+/*
+ * Check whether robots.txt permits this page.
+ */
+function robotsAllows(url, disallowedPaths) {
+    try {
+        const page = new URL(url);
+
+        for (const path of disallowedPaths) {
+
+            if (page.pathname.startsWith(path)) {
+                return false;
+            }
+        }
+
+        return true;
+
+    } catch {
+        return false;
+    }
+}
+
+
+/*
+ * Find links in an HTML page.
  */
 function findLinks(html, currentPage, domain) {
-
     const links = [];
 
     const linkPattern =
@@ -94,33 +176,27 @@ function findLinks(html, currentPage, domain) {
 
     let match;
 
-
     while ((match = linkPattern.exec(html)) !== null) {
 
         const url =
             makeAbsoluteURL(match[1], currentPage);
 
-
         if (
             url &&
             belongsToDomain(url, domain)
         ) {
-
             links.push(url);
-
         }
     }
-
 
     return links;
 }
 
 
 /*
- * Get readable text from HTML.
+ * Remove HTML markup and obtain searchable text.
  */
 function getPageText(html) {
-
     return html
         .replace(/<script[\s\S]*?<\/script>/gi, " ")
         .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -131,20 +207,15 @@ function getPageText(html) {
 
 
 /*
- * Find the page title.
+ * Read the page title.
  */
 function getPageTitle(html, url) {
-
-    const titleMatch =
+    const match =
         html.match(/<title[^>]*>(.*?)<\/title>/is);
 
-
-    if (titleMatch) {
-        return titleMatch[1].trim();
-    }
-
-
-    return url;
+    return match
+        ? match[1].trim()
+        : url;
 }
 
 
@@ -154,15 +225,18 @@ function getPageTitle(html, url) {
 async function crawlWebsite(domain) {
 
     console.log("");
-    console.log("Crawling website:", domain);
+    console.log("Crawling:", domain);
 
+    const startingURL =
+        "https://" + domain + "/";
 
-    const pagesToVisit = [
-        "https://" + domain + "/"
-    ];
-
+    const pagesToVisit = [startingURL];
 
     let pagesCrawled = 0;
+
+    // Get the starting host's robots.txt rules.
+    const robotsRules =
+        await getRobotsRules(startingURL);
 
 
     while (
@@ -173,30 +247,32 @@ async function crawlWebsite(domain) {
         const url = pagesToVisit.shift();
 
 
-        // Don't visit the same page twice.
         if (visitedPages.has(url)) {
             continue;
         }
 
-
         visitedPages.add(url);
+
+
+        // Respect robots.txt.
+        if (!robotsAllows(url, robotsRules)) {
+            console.log("Blocked by robots.txt:", url);
+            continue;
+        }
 
 
         try {
 
             console.log("Visiting:", url);
 
-
             const response = await fetch(url, {
                 headers: {
-                    "User-Agent":
-                        "Big-A-Search-Crawler/0.1"
+                    "User-Agent": USER_AGENT
                 }
             });
 
 
             if (!response.ok) {
-
                 console.log(
                     "Skipped:",
                     response.status,
@@ -211,7 +287,6 @@ async function crawlWebsite(domain) {
                 response.headers.get("content-type") || "";
 
 
-            // Big-A only indexes HTML pages.
             if (!contentType.includes("text/html")) {
                 continue;
             }
@@ -220,16 +295,13 @@ async function crawlWebsite(domain) {
             const html =
                 await response.text();
 
-
             const title =
                 getPageTitle(html, url);
-
 
             const text =
                 getPageText(html);
 
 
-            // Add the page to Big-A Search.
             searchIndex.push({
                 title: title,
                 url: url,
@@ -239,11 +311,9 @@ async function crawlWebsite(domain) {
 
             pagesCrawled++;
 
-
             console.log("Indexed:", title);
 
 
-            // Find more pages on this domain.
             const links =
                 findLinks(html, url, domain);
 
@@ -253,17 +323,12 @@ async function crawlWebsite(domain) {
                 if (!visitedPages.has(link)) {
                     pagesToVisit.push(link);
                 }
-
             }
 
 
         } catch (error) {
 
-            console.log(
-                "Could not crawl:",
-                url
-            );
-
+            console.log("Could not crawl:", url);
             console.log(error.message);
 
         }
@@ -271,33 +336,29 @@ async function crawlWebsite(domain) {
 
 
     console.log(
-        "Finished",
+        "Finished:",
         domain,
-        "-",
-        pagesCrawled,
-        "pages indexed."
+        "(" + pagesCrawled + " pages)"
     );
 }
 
 
 /*
- * Start Big-A Search Crawler.
+ * Run Big-A Search Crawler.
  */
 async function startCrawler() {
 
     console.log("");
-    console.log("Big-A Search Crawler");
-    console.log("====================");
+    console.log("========================");
+    console.log(" Big-A Search Crawler");
+    console.log("========================");
 
 
     for (const domain of websites) {
-
         await crawlWebsite(domain);
-
     }
 
 
-    // Save Big-A's new search index.
     fs.writeFileSync(
         "data/index.json",
         JSON.stringify(searchIndex, null, 4)
@@ -305,12 +366,10 @@ async function startCrawler() {
 
 
     console.log("");
-    console.log("====================");
-
     console.log(
-        "Crawl complete!",
+        "Finished!",
         searchIndex.length,
-        "pages are now in Big-A Search."
+        "pages indexed."
     );
 }
 
