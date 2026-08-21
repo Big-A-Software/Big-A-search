@@ -1,54 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Big-A Search API</title>
-  <style>
-    *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124;background:#fff}header{border-bottom:1px solid #e5e5e5;padding:18px 26px;display:flex;justify-content:space-between;align-items:center;gap:20px}header a{color:#0b57d0;text-decoration:none}main{max-width:850px;margin:0 auto;padding:55px 22px 90px}h1{font-size:38px;margin-bottom:8px}h2{margin-top:42px}.lead{font-size:19px;color:#5f6368;line-height:1.6}.card{border:1px solid #dadce0;border-radius:12px;padding:24px;margin:24px 0}button{border:0;border-radius:7px;padding:11px 18px;font-size:15px;background:#0b57d0;color:white;cursor:pointer}button:disabled{opacity:.55}input{width:100%;padding:12px;border:1px solid #dadce0;border-radius:7px;font-size:15px;margin:8px 0 12px}code,pre{font-family:Consolas,Monaco,monospace}pre{background:#f8f9fa;border:1px solid #e5e5e5;padding:16px;border-radius:8px;overflow-x:auto;white-space:pre-wrap}.key{overflow-wrap:anywhere;font-family:Consolas,Monaco,monospace;background:#f8f9fa;padding:12px;border-radius:7px;margin-top:14px;min-height:44px}.muted{color:#5f6368}footer{border-top:1px solid #e5e5e5;text-align:center;color:#70757a;padding:25px}
-  </style>
-</head>
-<body>
-<header><strong>Big-A Search API</strong><a href="/">Back to Big-A Search</a></header>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Big-A Search API</title>
+<style>*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124}header{border-bottom:1px solid #e5e5e5;padding:18px 26px;display:flex;justify-content:space-between}header a{color:#0b57d0;text-decoration:none}main{max-width:850px;margin:auto;padding:55px 22px 90px}h1{font-size:38px;margin-bottom:8px}h2{margin-top:42px}.lead{font-size:19px;color:#5f6368;line-height:1.6}.card{border:1px solid #dadce0;border-radius:12px;padding:24px;margin:24px 0}button{border:0;border-radius:7px;padding:11px 18px;font-size:15px;background:#0b57d0;color:white;cursor:pointer}button:disabled{opacity:.55}pre{font-family:Consolas,monospace;background:#f8f9fa;border:1px solid #e5e5e5;padding:16px;border-radius:8px;overflow:auto;white-space:pre-wrap}.key{overflow-wrap:anywhere;font-family:Consolas,monospace;background:#f8f9fa;padding:12px;border-radius:7px;margin-top:14px;min-height:44px}.muted{color:#5f6368}footer{border-top:1px solid #e5e5e5;text-align:center;color:#70757a;padding:25px}</style>
+</head><body>
+<header><strong>Big-A Search API</strong><a href="/">Big-A Search</a></header>
 <main>
-  <h1>Big-A Search API</h1>
-  <p class="lead">Use Big-A's search technology from your own website or program. Big-A Search itself is public: no account and no API key are required simply to search. API keys are optional integration identifiers for developers embedding or using Big-A technology.</p>
-
-  <div class="card">
-    <h2 style="margin-top:0">Generate an integration API key</h2>
-    <p class="muted">Generate a Big-A key to identify your website or application when it uses Big-A technology. The key is not required to access ordinary Big-A search.</p>
-    <button id="generateButton">Generate API Key</button>
-    <div id="keyOutput" class="key">No key generated yet.</div>
-  </div>
-
-  <h2>Public search endpoint</h2>
-  <pre>GET /api/search?q=windows</pre>
-  <p>No key is required. A developer using an integration key may optionally send it as:</p>
-  <pre>X-Big-A-Key: BA1.your-key-here
-
-Authorization: Bearer BA1.your-key-here</pre>
-
-  <h2>Try it</h2>
-  <div class="card">
-    <label for="apiKey"><strong>API key (optional)</strong></label><input id="apiKey" placeholder="BA1... or leave blank">
-    <label for="query"><strong>Search</strong></label><input id="query" placeholder="windows">
-    <button id="searchButton">Search Big-A API</button><pre id="resultOutput">Results will appear here.</pre>
-  </div>
-
-  <h2>Use it on a website</h2>
-  <pre>fetch('/api/search?q=' + encodeURIComponent('windows'), {
+<h1>Big-A Search API</h1>
+<p class="lead">Bring Big-A Search technology to your website or application. Normal searching on Big-A Search requires no API key. The developer API uses a Big-A API key.</p>
+<div class="card"><h2 style="margin-top:0">Get an API key</h2><p class="muted">No Big-A account is required. Generate a key for your website or application and keep it available for your API requests.</p><button id="generateButton">Generate API Key</button><div id="keyOutput" class="key">No key generated yet.</div></div>
+<h2>Search API</h2><pre>GET /api/search?q=windows</pre>
+<p>Include your Big-A API key with the request:</p><pre>X-Big-A-Key: BA1.your-key-here</pre>
+<h2>Website example</h2><pre>fetch('https://YOUR-BIG-A-DOMAIN/api/search?q=' + encodeURIComponent('windows'), {
   headers: {
     'X-Big-A-Key': 'BA1.your-key-here'
   }
-}).then(r => r.json()).then(console.log);</pre>
-  <p class="muted">The header identifies the integration. Removing the header does not disable public searching.</p>
-
-  <h2>Limits</h2>
-  <p>The optional <code>limit</code> parameter requests 1 to 50 results. Big-A may add integration statistics, custom Search Engine IDs, and reasonable rate controls as the API develops.</p>
-</main>
-<footer>Copyright Big-A 2024-2026</footer>
-<script>
-const generateButton=document.getElementById('generateButton'),keyOutput=document.getElementById('keyOutput'),apiKeyInput=document.getElementById('apiKey'),queryInput=document.getElementById('query'),searchButton=document.getElementById('searchButton'),resultOutput=document.getElementById('resultOutput');
-generateButton.addEventListener('click',async()=>{generateButton.disabled=true;keyOutput.textContent='Generating...';try{const response=await fetch('/api/key',{method:'POST'}),data=await response.json();if(!response.ok)throw new Error(data.message||'Could not generate key');keyOutput.textContent=data.api_key;apiKeyInput.value=data.api_key}catch(error){keyOutput.textContent=error.message}finally{generateButton.disabled=false}});
-searchButton.addEventListener('click',async()=>{const key=apiKeyInput.value.trim(),query=queryInput.value.trim();if(!query){resultOutput.textContent='Enter a search query.';return}searchButton.disabled=true;resultOutput.textContent='Searching...';try{const options=key?{headers:{'X-Big-A-Key':key}}:{};const response=await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=10`,options),data=await response.json();resultOutput.textContent=JSON.stringify(data,null,2)}catch(error){resultOutput.textContent=error.message}finally{searchButton.disabled=false}});queryInput.addEventListener('keydown',event=>{if(event.key==='Enter')searchButton.click()});
-</script>
+})
+.then(response => response.json())
+.then(data => console.log(data));</pre>
+<h2>Response</h2><pre>{
+  "engine": "Big-A Search",
+  "query": "windows",
+  "count": 2,
+  "results": [
+    {
+      "title": "Example result",
+      "url": "https://example.com/",
+      "description": "Page description..."
+    }
+  ]
+}</pre>
+<h2>Limits</h2><p>The optional <code>limit</code> parameter requests 1 to 50 results. More developer features can be added as the Big-A Search API develops.</p>
+</main><footer>Copyright Big-A 2024-2026</footer>
+<script>const b=document.getElementById('generateButton'),o=document.getElementById('keyOutput');b.addEventListener('click',async()=>{b.disabled=true;o.textContent='Generating...';try{const r=await fetch('/api/key',{method:'POST'}),d=await r.json();if(!r.ok)throw new Error(d.message||'Could not generate key');o.textContent=d.api_key}catch(e){o.textContent=e.message}finally{b.disabled=false}});</script>
 </body></html>
