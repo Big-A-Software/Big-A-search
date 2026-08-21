@@ -1,10 +1,14 @@
 name: Big-A Search Crawler
 
 on:
-  # Allows us to run the crawler manually from GitHub.
   workflow_dispatch:
+    inputs:
+      full_recrawl:
+        description: "Rebuild sites list and crawl every website again"
+        required: false
+        default: false
+        type: boolean
 
-  # Automatically crawl once every hour.
   schedule:
     - cron: "0 * * * *"
 
@@ -16,29 +20,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # Download the Big-A Search repository.
       - name: Get Big-A Search
         uses: actions/checkout@v4
 
-      # Install Node.js so crawler.js can run.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "22"
 
-      # Run the Big-A crawler.
+      # For a manual full recrawl, recover every known domain from BOTH files,
+      # remove duplicates, put the complete list back in sites.json, and clear
+      # crawler history so crawler.js treats every domain as new.
+      - name: Prepare full recrawl
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.full_recrawl }}
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const sites = JSON.parse(fs.readFileSync('data/sites.json', 'utf8'));
+          const crawled = JSON.parse(fs.readFileSync('data/crawled-sites.json', 'utf8'));
+          const all = [...sites, ...crawled]
+            .filter(x => typeof x === 'string')
+            .map(x => x.trim().toLowerCase())
+            .filter(Boolean);
+          const unique = [...new Set(all)].sort();
+          fs.writeFileSync('data/sites.json', JSON.stringify(unique, null, 4) + '\n');
+          fs.writeFileSync('data/crawled-sites.json', '[]\n');
+          console.log(`Full recrawl prepared: ${unique.length} unique domains.`);
+          NODE
+
       - name: Crawl websites
         run: node crawler/crawler.js
 
-      # Save both the search index AND the list of domains already crawled.
-      # Without crawled-sites.json, every Action run thinks all domains are new.
       - name: Save search index and crawler history
         run: |
           git config user.name "Big-A Search Crawler"
           git config user.email "big-a-search-crawler@users.noreply.github.com"
 
-          git add data/index.json data/crawled-sites.json
+          # -A also saves the repaired/deduplicated sites.json during a full recrawl.
+          git add -A data
 
           if git diff --cached --quiet; then
             echo "The search index and crawler history have not changed."
