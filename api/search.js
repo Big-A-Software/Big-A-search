@@ -36,16 +36,15 @@ module.exports = function handler(req, res) {
   if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "GET") return res.status(405).json({ error: "method_not_allowed", message: "Use GET to search Big-A." });
 
-  // Big-A Search is public. API keys identify integrations; they do not unlock search access.
-  const suppliedKey = getApiKey(req);
-  let integration = { key_supplied: Boolean(suppliedKey), key_valid: null };
-  if (suppliedKey) {
-    try {
-      integration.key_valid = verifyApiKey(suppliedKey);
-    } catch {
-      // If the signing secret is not configured, public search still works.
-      integration.key_valid = null;
-    }
+  let validKey = false;
+  try {
+    validKey = verifyApiKey(getApiKey(req));
+  } catch {
+    return res.status(503).json({ error: "api_not_configured", message: "Big-A Search API needs BIG_A_API_SECRET configured on the server." });
+  }
+
+  if (!validKey) {
+    return res.status(401).json({ error: "invalid_api_key", message: "A valid Big-A Search API key is required for API requests." });
   }
 
   const rawQuery = Array.isArray(req.query.q) ? req.query.q[0] : req.query.q;
@@ -66,7 +65,7 @@ module.exports = function handler(req, res) {
       .slice(0, limit)
       .map(item => ({ title: item.page.title, url: item.page.url, description: item.page.description }));
 
-    return res.status(200).json({ engine: "Big-A Search", query, count: results.length, integration, results });
+    return res.status(200).json({ engine: "Big-A Search", query, count: results.length, results });
   } catch {
     return res.status(500).json({ error: "search_failed", message: "Big-A could not read the search index." });
   }
