@@ -31,17 +31,18 @@ jobs:
       - name: Crawl websites
         run: node crawler/crawler.js
 
-      # Save the new search index back to GitHub.
-      - name: Save search index
+      # Save both the search index AND the list of domains already crawled.
+      # Without crawled-sites.json, every Action run thinks all domains are new.
+      - name: Save search index and crawler history
         run: |
           git config user.name "Big-A Search Crawler"
           git config user.email "big-a-search-crawler@users.noreply.github.com"
 
-          git add data/index.json
+          git add data/index.json data/crawled-sites.json
 
           if git diff --cached --quiet; then
-            echo "The search index has not changed."
+            echo "The search index and crawler history have not changed."
           else
-            git commit -m "Update Big-A Search index"
+            git commit -m "Update Big-A Search index and crawler history"
             git push
           fi
