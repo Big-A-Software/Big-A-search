@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Big-A Search API</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #202124;
+      background: #fff;
+    }
+    header {
+      border-bottom: 1px solid #e5e5e5;
+      padding: 18px 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    header a { color: #0b57d0; text-decoration: none; }
+    main {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 55px 22px 90px;
+    }
+    h1 { font-size: 38px; margin-bottom: 8px; }
+    h2 { margin-top: 42px; }
+    .lead { font-size: 19px; color: #5f6368; line-height: 1.6; }
+    .card {
+      border: 1px solid #dadce0;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 18px;
+      font-size: 15px;
+      background: #0b57d0;
+      color: white;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .55; cursor: default; }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dadce0;
+      border-radius: 7px;
+      font-size: 15px;
+      margin: 8px 0 12px;
+    }
+    code, pre {
+      font-family: Consolas, Monaco, monospace;
+    }
+    pre {
+      background: #f8f9fa;
+      border: 1px solid #e5e5e5;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+    .key {
+      overflow-wrap: anywhere;
+      font-family: Consolas, Monaco, monospace;
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 7px;
+      margin-top: 14px;
+      min-height: 44px;
+    }
+    .muted { color: #5f6368; }
+    footer {
+      border-top: 1px solid #e5e5e5;
+      text-align: center;
+      color: #70757a;
+      padding: 25px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <strong>Big-A Search API</strong>
+  <a href="/">Back to Big-A Search</a>
+</header>
+
+<main>
+  <h1>Big-A Search API</h1>
+  <p class="lead">Search Big-A's own web index from another website or program. No Big-A account is required. A Big-A API key is required for searches.</p>
+
+  <div class="card">
+    <h2 style="margin-top:0">Generate an API key</h2>
+    <p class="muted">Click once and save the key somewhere safe. Big-A does not store a copy of the generated key.</p>
+    <button id="generateButton">Generate API Key</button>
+    <div id="keyOutput" class="key">No key generated yet.</div>
+  </div>
+
+  <h2>Search endpoint</h2>
+  <pre>GET /api/search?q=windows</pre>
+  <p>Send your key using either of these request headers:</p>
+  <pre>X-Big-A-Key: BA1.your-key-here
+
+Authorization: Bearer BA1.your-key-here</pre>
+
+  <h2>Try it</h2>
+  <div class="card">
+    <label for="apiKey"><strong>API key</strong></label>
+    <input id="apiKey" placeholder="BA1...">
+    <label for="query"><strong>Search</strong></label>
+    <input id="query" placeholder="windows">
+    <button id="searchButton">Search API</button>
+    <pre id="resultOutput">Results will appear here.</pre>
+  </div>
+
+  <h2>Example response</h2>
+  <pre>{
+  "engine": "Big-A Search",
+  "query": "windows",
+  "count": 2,
+  "results": [
+    {
+      "title": "Example result",
+      "url": "https://example.com/",
+      "description": "Page description..."
+    }
+  ]
+}</pre>
+
+  <h2>Limits</h2>
+  <p>The optional <code>limit</code> parameter can request 1 to 50 results. Big-A may add rate limits and additional API features as the service develops.</p>
+</main>
+
+<footer>Copyright Big-A 2024-2026</footer>
+
+<script>
+  const generateButton = document.getElementById("generateButton");
+  const keyOutput = document.getElementById("keyOutput");
+  const apiKeyInput = document.getElementById("apiKey");
+  const queryInput = document.getElementById("query");
+  const searchButton = document.getElementById("searchButton");
+  const resultOutput = document.getElementById("resultOutput");
+
+  generateButton.addEventListener("click", async () => {
+    generateButton.disabled = true;
+    keyOutput.textContent = "Generating...";
+
+    try {
+      const response = await fetch("/api/key", { method: "POST" });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Could not generate key");
+
+      keyOutput.textContent = data.api_key;
+      apiKeyInput.value = data.api_key;
+    } catch (error) {
+      keyOutput.textContent = error.message;
+    } finally {
+      generateButton.disabled = false;
+    }
+  });
+
+  searchButton.addEventListener("click", async () => {
+    const key = apiKeyInput.value.trim();
+    const query = queryInput.value.trim();
+
+    if (!key || !query) {
+      resultOutput.textContent = "Enter an API key and a search query.";
+      return;
+    }
+
+    searchButton.disabled = true;
+    resultOutput.textContent = "Searching...";
+
+    try {
+      const response = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=10`, {
+        headers: { "X-Big-A-Key": key }
+      });
+      const data = await response.json();
+      resultOutput.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+      resultOutput.textContent = error.message;
+    } finally {
+      searchButton.disabled = false;
+    }
+  });
+
+  queryInput.addEventListener("keydown", event => {
+    if (event.key === "Enter") searchButton.click();
+  });
+</script>
+</body>
+</html>
