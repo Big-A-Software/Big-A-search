@@ -10,6 +10,12 @@ Want a website included in Big-A Search?
 
 Instructions for adding a website are available on the **official Big-A Search website**.
 
+## Big-A Search API
+
+Big-A Search now includes an experimental API for searching the Big-A index from other websites and programs.
+
+The API includes an account-free API-key generator and a JSON search endpoint. See `api.html` for the API page and documentation.
+
 ## Development
 
 Big-A Search is actively being developed and improved. New websites and search features will continue to be added.
