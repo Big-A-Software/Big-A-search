@@ -1,0 +1,46 @@
+name: Add requested Big-A sites
+
+on:
+  push:
+    paths:
+      - '.github/workflows/add-requested-sites.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  add-sites:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Big-A Search
+        uses: actions/checkout@v7
+
+      - name: Add requested websites to sites.json
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = 'data/sites.json';
+          const sites = JSON.parse(fs.readFileSync(path, 'utf8'));
+          const additions = [
+            'ccleaner.com',
+            'forth.com',
+            'gendigital.com',
+            'fpi.gendigital.com'
+          ];
+          const updated = [...new Set([...sites, ...additions].map(s => s.trim().toLowerCase()).filter(Boolean))].sort();
+          fs.writeFileSync(path, JSON.stringify(updated, null, 4) + '\n');
+          console.log(`sites.json now contains ${updated.length} unique domains.`);
+          NODE
+
+      - name: Commit sites.json
+        run: |
+          git config user.name "Big-A Search Crawler"
+          git config user.email "big-a-search-crawler@users.noreply.github.com"
+          git add data/sites.json
+          if git diff --cached --quiet; then
+            echo "All requested websites were already present."
+          else
+            git commit -m "Add CCleaner, FORTH and Gen Digital sites"
+            git push
+          fi
