@@ -1,0 +1,34 @@
+name: Add Norton Neo to Big-A
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  add-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Add Norton Neo
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = 'data/sites.json';
+          const sites = JSON.parse(fs.readFileSync(path, 'utf8'));
+          if (!sites.includes('neobrowser.ai')) sites.push('neobrowser.ai');
+          sites.sort();
+          fs.writeFileSync(path, JSON.stringify(sites, null, 4) + '\n');
+          NODE
+      - name: Save site list
+        run: |
+          git config user.name "Big-A Search"
+          git config user.email "big-a-search@users.noreply.github.com"
+          git add data/sites.json
+          if git diff --cached --quiet; then
+            echo "Norton Neo is already present."
+          else
+            git commit -m "Add Norton Neo to sites"
+            git push
+          fi
