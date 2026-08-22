@@ -21,12 +21,13 @@ jobs:
 
     steps:
       - name: Get Big-A Search
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: "22"
+          package-manager-cache: false
 
       # For a manual full recrawl, recover every known domain from BOTH files,
       # remove duplicates, put the complete list back in sites.json, and clear
