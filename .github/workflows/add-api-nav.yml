@@ -1,0 +1,56 @@
+name: Add API navigation button
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/add-api-nav.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add API button to index.html
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text()
+
+          marker = '''    <button onclick="openModal('aboutModal')">
+      About
+    </button>
+'''
+          addition = '''    <button onclick="window.location.href='api.html'">
+      API
+    </button>
+
+'''
+
+          if "window.location.href='api.html'" not in text:
+              if marker not in text:
+                  raise SystemExit('Could not find the top navigation About button.')
+              text = text.replace(marker, addition + marker, 1)
+              path.write_text(text)
+              print('Added API button to top navigation.')
+          else:
+              print('API button already exists.')
+          PY
+
+      - name: Commit change
+        run: |
+          git config user.name "Big-A Search"
+          git config user.email "big-a-search@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No change needed."
+          else
+            git commit -m "Add API button to top navigation"
+            git push
+          fi
