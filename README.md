@@ -1,24 +1,24 @@
-# Big-A Search
+# Welp Search
 
-**Big-A Search** is an independent search engine created by Big-A.
+**Welp Search** is an independent search engine created by Big-A.
 
-Big-A Search uses its own crawler to visit websites and build a searchable index of webpages. The project is continually growing as more websites are added.
+Welp Search uses its own crawler to visit websites and build a searchable index of webpages. The project is continually growing as more websites are added.
 
 ## Add a Website
 
-Want a website included in Big-A Search?
+Want a website included in Welp Search?
 
-Instructions for adding a website are available on the **official Big-A Search website**.
+To propose a website, edit `data/sites.json` on GitHub, add the site's main domain as a JSON string, and submit the change for review.
 
-## Big-A Search API
+## Welp Search API
 
-Big-A Search now includes an experimental API for searching the Big-A index from other websites and programs.
+Welp Search now includes an experimental API for searching the Big-A index from other websites and programs.
 
 The API includes an account-free API-key generator and a JSON search endpoint. See `api.html` for the API page and documentation.
 
 ## Development
 
-Big-A Search is actively being developed and improved. New websites and search features will continue to be added.
+Welp Search is actively being developed and improved. New websites and search features will continue to be added.
 
 ## License
 
