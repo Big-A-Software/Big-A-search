@@ -5,7 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Lux</title>
+  <title>Lux Search</title>
+  <meta name="application-name" content="Lux">
+  <meta name="description" content="Lux is a free and open-source search engine developed by Big-A.">
+  <meta property="og:title" content="Lux Search">
+  <meta property="og:description" content="Search the web with Lux, a Big-A project.">
 
   <style>
     * {
@@ -21,12 +25,20 @@
 
     /* TOP NAVIGATION */
 
-    .top-nav {
+     .top-nav {
       display: flex;
+      align-items: center;
       justify-content: flex-end;
       gap: 22px;
       padding: 16px 28px;
       border-bottom: 1px solid #e5e5e5;
+    }
+
+    .nav-logo {
+      height: 42px;
+      width: auto;
+      margin-right: auto;
+      display: block;
     }
 
     .top-nav button {
@@ -272,6 +284,8 @@
 
   <nav class="top-nav">
 
+    <img class="nav-logo" src="big-a logo.jpg" alt="Lux logo">
+
     <button onclick="openModal('aboutModal')">
       About
     </button>
@@ -331,7 +345,7 @@
 
     <p>
       Lux searches a growing collection of selected websites.
-      More websites are continually being added to make Big-A broader
+      More websites are continually being added to make Lux broader
       and more useful.
     </p>
 
