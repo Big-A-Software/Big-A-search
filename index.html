@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Big-A Search</title>
+  <title>Welp Search</title>
 
   <style>
     * {
@@ -39,47 +39,6 @@
 
     .top-nav button:hover {
       text-decoration: underline;
-    }
-
-
-    /* BIG-A ONLINE CELEBRATION */
-
-    .launch-banner {
-      text-align: center;
-      padding: 35px 20px;
-      background: #f8f9fa;
-      border-bottom: 1px solid #dadce0;
-    }
-
-    .launch-symbol {
-      font-size: 46px;
-      margin-bottom: 8px;
-    }
-
-    .launch-banner h1 {
-      margin: 0 0 10px;
-      font-size: 32px;
-      font-weight: 500;
-    }
-
-    .launch-banner p {
-      margin: 0 0 20px;
-      color: #5f6368;
-      font-size: 17px;
-    }
-
-    .event-button {
-      border: 1px solid #dadce0;
-      border-radius: 7px;
-      padding: 11px 19px;
-      background: white;
-      color: #0b57d0;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    .event-button:hover {
-      background: #f1f3f4;
     }
 
 
@@ -323,38 +282,14 @@
 
   </nav>
 
-
-  <!-- LAUNCH CELEBRATION -->
-
-  <section class="launch-banner">
-
-    <div class="launch-symbol">
-      🎉
-    </div>
-
-    <h1>Big-A Search Is Back Online!</h1>
-
-    <p>
-      A new independent Big-A Search is now operating.
-    </p>
-
-    <button
-      class="event-button"
-      onclick="openModal('eventModal')">
-      Info About This Event
-    </button>
-
-  </section>
-
-
-  <!-- BIG-A SEARCH -->
+<!-- WELP SEARCH -->
 
   <main class="search-page">
 
     <img
       class="logo"
       src="big-a logo.jpg"
-      alt="Big-A Search"
+      alt="Welp Search logo"
     >
 
     <div class="search-container">
@@ -365,7 +300,7 @@
           id="searchInput"
           class="search-input"
           type="text"
-          placeholder="Search Big-A"
+          placeholder="Search Welp"
         >
 
         <button
@@ -395,7 +330,7 @@
     </h2>
 
     <p>
-      Big-A Search searches a growing collection of selected websites.
+      Welp Search searches a growing collection of selected websites.
       More websites are continually being added to make Big-A broader
       and more useful.
     </p>
@@ -433,71 +368,26 @@
 
   </footer>
 
-
-  <!-- LAUNCH EVENT POPUP -->
-
-  <div id="eventModal" class="modal-background">
-
-    <div class="modal">
-
-      <h2>🎉 Big-A Search Is Back Online!</h2>
-
-      <p>
-        This marks a major change for Big-A Search.
-      </p>
-
-      <p>
-        The previous version of Big-A Search used Google Programmable
-        Search Engine.
-      </p>
-
-      <p>
-        Big-A is now developing and operating its own search system.
-        Big-A Search maintains its own list of websites, crawls selected
-        pages, builds a search index, and searches that index using
-        Big-A's own code.
-      </p>
-
-      <p>
-        This gives Big-A Search much greater control over what websites
-        are included and how the search engine develops.
-      </p>
-
-      <p>
-        Big-A Search is also free and open-source software.
-      </p>
-
-      <button
-        class="close-button"
-        onclick="closeModal('eventModal')">
-        Close
-      </button>
-
-    </div>
-
-  </div>
-
-
   <!-- ABOUT POPUP -->
 
   <div id="aboutModal" class="modal-background">
 
     <div class="modal">
 
-      <h2>About Big-A Search</h2>
+      <h2>About Welp Search</h2>
 
       <p>
-        Big-A Search is a free and open-source search engine developed
+        Welp Search is a free and open-source search engine developed
         by Big-A.
       </p>
 
       <p>
-        Big-A Search is one of the projects developed by Big-A.
+        Welp Search is one of the projects developed by Big-A.
       </p>
 
       <p>
         Rather than attempting to search every website on the Internet,
-        Big-A Search focuses on a selected and growing collection of
+        Welp Search focuses on a selected and growing collection of
         websites.
       </p>
 
@@ -524,10 +414,10 @@
 
     <div class="modal">
 
-      <h2>Add a Website to Big-A Search</h2>
+      <h2>Add a Website to Welp Search</h2>
 
       <p>
-        Big-A Search's website list is maintained publicly on GitHub.
+        Welp Search's website list is maintained publicly in this GitHub repository.
       </p>
 
       <p>
@@ -539,7 +429,7 @@
       </p>
 
       <p>
-        Add the site's main domain name. Do not add an individual page.
+        Click the button below, then use GitHub's editor to add the site's main domain name to the JSON list. Do not add an individual page.
       </p>
 
       <p>Example:</p>
@@ -562,13 +452,12 @@
       </p>
 
       <p>
-        Submit the change through GitHub so it can be reviewed before
-        becoming part of Big-A Search.
+        When you save the edit, GitHub will guide you through proposing the change. Submit it for review; after it is accepted, the crawler can pick up the new domain.
       </p>
 
       <a
         class="github-button"
-        href="https://github.com/Big-A-Software/Big-A-search/blob/main/data/sites.json"
+        href="https://github.com/Big-A-Software/Big-A-search/edit/main/data/sites.json"
         target="_blank"
         rel="noopener noreferrer">
         Add a Website on GitHub
@@ -593,16 +482,16 @@
 
     <div class="modal">
 
-      <h2>Big-A Search License</h2>
+      <h2>Welp Search License</h2>
 
       <p>
-        Big-A Search is free and open-source software licensed under
+        Welp Search is free and open-source software licensed under
         the Apache License, Version 2.0.
       </p>
 
       <p>
         The Apache License permits people to use, copy, modify, and
-        redistribute Big-A Search, including modified versions, under
+        redistribute Welp Search, including modified versions, under
         the terms of the license.
       </p>
 
@@ -612,7 +501,7 @@
       </p>
 
       <p>
-        See the <code>LICENSE</code> file in the Big-A Search GitHub
+        See the <code>LICENSE</code> file in the Welp Search GitHub
         repository for the complete license.
       </p>
 
@@ -630,10 +519,10 @@
   <script>
 
     /*
-     * BIG-A SEARCH
+     * WELP SEARCH
      */
 
-    async function searchBigA() {
+    async function searchWelp() {
 
       const input =
         document.getElementById("searchInput");
@@ -662,7 +551,7 @@
         if (!response.ok) {
 
           resultsArea.textContent =
-            "Big-A Search could not load the search index.";
+            "Welp Search could not load the search index.";
 
           return;
 
@@ -743,7 +632,7 @@
       } catch (error) {
 
         resultsArea.textContent =
-          "Big-A Search encountered an error.";
+          "Welp Search encountered an error.";
 
       }
 
@@ -752,7 +641,7 @@
 
     document
       .getElementById("searchButton")
-      .addEventListener("click", searchBigA);
+      .addEventListener("click", searchWelp);
 
 
     document
@@ -760,7 +649,7 @@
       .addEventListener("keydown", function(event) {
 
         if (event.key === "Enter") {
-          searchBigA();
+          searchWelp();
         }
 
       });
