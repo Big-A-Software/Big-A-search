@@ -284,7 +284,7 @@
 
   <nav class="top-nav">
 
-    <img class="nav-logo" src="Big-A logo.jpg" alt="Lux logo">
+    <img class="nav-logo" src="big-A logo.jpg" alt="Lux logo">
 
     <button onclick="openModal('aboutModal')">
       About
@@ -302,7 +302,7 @@
 
     <img
       class="logo"
-      src="Big-A logo.jpg"
+      src="big-A logo.jpg"
       alt="Lux logo"
     >
 
@@ -425,68 +425,32 @@
   <!-- ADD WEBSITE POPUP -->
 
   <div id="addWebsiteModal" class="modal-background">
-
     <div class="modal">
-
       <h2>Add a Website to Lux</h2>
 
       <p>
-        Lux's website list is maintained publicly in this GitHub repository.
+        To suggest a website for Lux, please post a GitHub issue and include the website you would like us to add.
       </p>
+
+      <p><strong>Note: You must have a GitHub account to post an issue.</strong></p>
 
       <p>
-        Websites are stored in:
+        Click the link below to go to the GitHub page where you can create a new issue.
       </p>
 
-      <p>
-        <code>data/sites.json</code>
-      </p>
-
-      <p>
-        Click the button below, then use GitHub's editor to add the site's main domain name to the JSON list. Do not add an individual page.
-      </p>
-
-      <p>Example:</p>
-
-      <pre><code>[
-  "softpedia.com",
-  "amazon.com",
-  "hp.com",
-  "example.com"
-]</code></pre>
-
-      <p>
-        Each domain must be inside quotation marks.
-        Put a comma after every entry except the final entry.
-      </p>
-
-      <p>
-        Big-A may crawl pages belonging to the listed domain and its
-        subdomains according to Big-A's crawler rules.
-      </p>
-
-      <p>
-        When you save the edit, GitHub will guide you through proposing the change. Submit it for review; after it is accepted, the crawler can pick up the new domain.
-      </p>
-
-      <a
-        class="github-button"
-        href="https://github.com/Big-A-Software/Big-A-search/edit/main/data/sites.json"
-        target="_blank"
-        rel="noopener noreferrer">
-        Add a Website on GitHub
+      <a class="github-button"
+         href="https://github.com/Big-A-Software/Big-A-search/issues/new"
+         target="_blank"
+         rel="noopener noreferrer">
+        Post a Website Request
       </a>
 
       <br>
 
-      <button
-        class="close-button"
-        onclick="closeModal('addWebsiteModal')">
+      <button class="close-button" onclick="closeModal('addWebsiteModal')">
         Close
       </button>
-
     </div>
-
   </div>
 
 
