@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About Lux</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124;background:#fff}nav{display:flex;align-items:center;padding:16px 28px;border-bottom:1px solid #e5e5e5}nav a{color:#0b57d0;text-decoration:none;margin-left:22px}nav a:first-of-type{margin-left:auto}.brand{font-size:25px;font-weight:700;color:#202124}.hero{padding:90px 24px 70px;text-align:center;background:#fafafa}.hero h1{font-size:clamp(42px,8vw,82px);margin:0 0 18px}.hero p{font-size:21px;line-height:1.6;max-width:780px;margin:auto;color:#5f6368}.section{max-width:900px;margin:auto;padding:80px 28px}.section h2{font-size:36px;margin:0 0 20px}.section p{font-size:18px;line-height:1.75;color:#4d5156}.timeline{position:relative;max-width:900px;margin:auto;padding:30px 28px 100px}.timeline:before{content:"";position:absolute;left:49px;top:35px;bottom:100px;width:3px;background:#e0e0e0}.event{position:relative;margin:0 0 80px;padding-left:70px;opacity:.25;transform:translateY(25px);transition:opacity .65s,transform .65s}.event:before{content:"";position:absolute;left:15px;top:7px;width:16px;height:16px;border-radius:50%;background:#c7c7c7;border:4px solid white;box-shadow:0 0 0 2px #ddd;transition:.65s}.event.active{opacity:1;transform:none}.event.active:before{background:#0b57d0;box-shadow:0 0 0 2px #0b57d0}.event .date{color:#0b57d0;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.08em}.event h3{font-size:28px;margin:8px 0 12px}.event p{font-size:18px;line-height:1.7;color:#5f6368;margin:0}.future{background:#fafafa}footer{text-align:center;padding:28px;border-top:1px solid #e5e5e5;color:#70757a}footer a{color:#0b57d0;text-decoration:none;margin:0 10px}@media(max-width:600px){.hero{padding-top:60px}.section{padding:55px 22px}.timeline{padding-left:18px}.timeline:before{left:37px}.event{padding-left:58px}.event:before{left:11px}}
+</style>
+</head>
+<body>
+<nav><span class="brand">Lux</span><a href="index.html">Search</a><a href="license.html">License</a><a href="api.html">API</a></nav>
+<section class="hero"><h1>About Lux</h1><p>Lux is a free and open-source search engine developed by Big-A. It began as a much smaller experiment built around Google search technology and is growing into an independent search project with its own crawler, index, and search system.</p></section>
+<section class="section"><h2>A search engine built in the open</h2><p>Lux does not begin with the assumption that it has to search every page on the Internet. Its approach is to build a useful, understandable search engine around a selected and continually growing collection of websites. The project is deliberately open-source so its code can be examined, learned from, modified, and improved.</p><p>The name Lux comes from the Latin word for “light.” It fits the purpose of search: finding something that would otherwise remain difficult to see.</p></section>
+<section class="section" style="padding-bottom:30px"><h2>The story so far</h2><p>Scroll through the timeline to follow Lux from its beginnings to the search engine it is becoming.</p></section>
+<div class="timeline">
+  <article class="event"><div class="date">2024</div><h3>Big-A begins</h3><p>Big-A was created in 2024. The company became the home for a growing collection of software projects, including the search project that would eventually become Lux.</p></article>
+  <article class="event"><div class="date">August 2026</div><h3>The search experiment</h3><p>The project began as a custom search engine using Google Programmable Search Engine underneath. It provided a Big-A-branded search experience while Google supplied the underlying search technology.</p></article>
+  <article class="event"><div class="date">August 20, 2026</div><h3>Big-A Search</h3><p>The project took shape as <strong>Big-A Search</strong>. An early implementation searched a selected collection of websites through Google Programmable Search. The idea was already larger than a custom Google page: the goal was to develop an independent crawler, index, and search system.</p></article>
+  <article class="event"><div class="date">2026</div><h3>Becoming independent</h3><p>Big-A Search moved away from relying on Google as the search engine itself. The project developed its own searchable index and crawler infrastructure, giving Big-A control over which sites are indexed and how search works.</p></article>
+  <article class="event"><div class="date">September 17, 2026</div><h3>Big-A Search becomes Lux</h3><p>The search engine received its own identity: <strong>Lux</strong>. Big-A remained the company behind the project, while Lux became the product name. The new identity reflects the basic purpose of search—bringing information into view.</p></article>
+  <article class="event"><div class="date">Today</div><h3>A growing search engine</h3><p>Lux searches a growing collection of selected websites and accepts website suggestions from its users. The project remains free and open source while its crawler, index, ranking, and search experience continue to develop.</p></article>
+</div>
+<section class="section future"><h2>What comes next</h2><p>Lux is still young. Its history is being written as the index expands and the search technology improves. The long-term direction is straightforward: make Lux broader and more useful while keeping the project understandable, independent, and open.</p></section>
+<footer><a href="index.html">Lux Search</a><a href="license.html">License</a><a href="api.html">API</a><br><br>Copyright Big-A 2024-2026</footer>
+<script>
+const events=document.querySelectorAll('.event');
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('active')})},{threshold:.35});
+events.forEach(e=>observer.observe(e));
+</script>
+</body></html>
