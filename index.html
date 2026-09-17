@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Big-A Search</title>
+  <title>Lux</title>
 
   <style>
     * {
@@ -282,14 +282,14 @@
 
   </nav>
 
-<!-- BIG-A SEARCH -->
+<!-- LUX -->
 
   <main class="search-page">
 
     <img
       class="logo"
       src="big-a logo.jpg"
-      alt="Big-A Search logo"
+      alt="Lux logo"
     >
 
     <div class="search-container">
@@ -300,7 +300,7 @@
           id="searchInput"
           class="search-input"
           type="text"
-          placeholder="Search Big-A"
+          placeholder="Search Lux"
         >
 
         <button
@@ -330,7 +330,7 @@
     </h2>
 
     <p>
-      Big-A Search searches a growing collection of selected websites.
+      Lux searches a growing collection of selected websites.
       More websites are continually being added to make Big-A broader
       and more useful.
     </p>
@@ -374,20 +374,20 @@
 
     <div class="modal">
 
-      <h2>About Big-A Search</h2>
+      <h2>About Lux</h2>
 
       <p>
-        Big-A Search is a free and open-source search engine developed
+        Lux is a free and open-source search engine developed
         by Big-A.
       </p>
 
       <p>
-        Big-A Search is one of the projects developed by Big-A.
+        Lux is one of the projects developed by Big-A.
       </p>
 
       <p>
         Rather than attempting to search every website on the Internet,
-        Big-A Search focuses on a selected and growing collection of
+        Lux focuses on a selected and growing collection of
         websites.
       </p>
 
@@ -414,10 +414,10 @@
 
     <div class="modal">
 
-      <h2>Add a Website to Big-A Search</h2>
+      <h2>Add a Website to Lux</h2>
 
       <p>
-        Big-A Search's website list is maintained publicly in this GitHub repository.
+        Lux's website list is maintained publicly in this GitHub repository.
       </p>
 
       <p>
@@ -482,16 +482,16 @@
 
     <div class="modal">
 
-      <h2>Big-A Search License</h2>
+      <h2>Lux License</h2>
 
       <p>
-        Big-A Search is free and open-source software licensed under
+        Lux is free and open-source software licensed under
         the Apache License, Version 2.0.
       </p>
 
       <p>
         The Apache License permits people to use, copy, modify, and
-        redistribute Big-A Search, including modified versions, under
+        redistribute Lux, including modified versions, under
         the terms of the license.
       </p>
 
@@ -501,7 +501,7 @@
       </p>
 
       <p>
-        See the <code>LICENSE</code> file in the Big-A Search GitHub
+        See the <code>LICENSE</code> file in the Lux GitHub
         repository for the complete license.
       </p>
 
@@ -519,10 +519,10 @@
   <script>
 
     /*
-     * BIG-A SEARCH
+     * LUX
      */
 
-    async function searchBigA() {
+    async function searchLux() {
 
       const input =
         document.getElementById("searchInput");
@@ -551,7 +551,7 @@
         if (!response.ok) {
 
           resultsArea.textContent =
-            "Big-A Search could not load the search index.";
+            "Lux could not load the search index.";
 
           return;
 
@@ -632,7 +632,7 @@
       } catch (error) {
 
         resultsArea.textContent =
-          "Big-A Search encountered an error.";
+          "Lux encountered an error.";
 
       }
 
@@ -641,7 +641,7 @@
 
     document
       .getElementById("searchButton")
-      .addEventListener("click", searchBigA);
+      .addEventListener("click", searchLux);
 
 
     document
@@ -649,7 +649,7 @@
       .addEventListener("keydown", function(event) {
 
         if (event.key === "Enter") {
-          searchBigA();
+          searchLux();
         }
 
       });
