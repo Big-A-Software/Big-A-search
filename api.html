@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Welp Search API</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Big-A Search API</title>
 <style>*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124}header{border-bottom:1px solid #e5e5e5;padding:18px 26px;display:flex;justify-content:space-between}header a{color:#0b57d0;text-decoration:none}main{max-width:850px;margin:auto;padding:55px 22px 90px}h1{font-size:38px;margin-bottom:8px}h2{margin-top:42px}.lead{font-size:19px;color:#5f6368;line-height:1.6}.card{border:1px solid #dadce0;border-radius:12px;padding:24px;margin:24px 0}button{border:0;border-radius:7px;padding:11px 18px;font-size:15px;background:#0b57d0;color:white;cursor:pointer}button:disabled{opacity:.55}pre{font-family:Consolas,monospace;background:#f8f9fa;border:1px solid #e5e5e5;padding:16px;border-radius:8px;overflow:auto;white-space:pre-wrap}.key{overflow-wrap:anywhere;font-family:Consolas,monospace;background:#f8f9fa;padding:12px;border-radius:7px;margin-top:14px;min-height:44px}.muted{color:#5f6368}footer{border-top:1px solid #e5e5e5;text-align:center;color:#70757a;padding:25px}</style>
 </head><body>
-<header><strong>Welp Search API</strong><a href="/">Welp Search</a></header>
+<header><strong>Big-A Search API</strong><a href="/">Big-A Search</a></header>
 <main>
-<h1>Welp Search API</h1>
-<p class="lead">Bring Welp Search technology to your website or application. Normal searching on Welp Search requires no API key. The developer API uses a Big-A API key.</p>
+<h1>Big-A Search API</h1>
+<p class="lead">Bring Big-A Search technology to your website or application. Normal searching on Big-A Search requires no API key. The developer API uses a Big-A API key.</p>
 <div class="card"><h2 style="margin-top:0">Get an API key</h2><p class="muted">No Big-A account is required. Generate a key for your website or application and keep it available for your API requests.</p><button id="generateButton">Generate API Key</button><div id="keyOutput" class="key">No key generated yet.</div></div>
 <h2>Search API</h2><pre>GET /api/search?q=windows</pre>
 <p>Include your Big-A API key with the request:</p><pre>X-Big-A-Key: BA1.your-key-here</pre>
@@ -19,7 +19,7 @@
 .then(response => response.json())
 .then(data => console.log(data));</pre>
 <h2>Response</h2><pre>{
-  "engine": "Welp Search",
+  "engine": "Big-A Search",
   "query": "windows",
   "count": 2,
   "results": [
@@ -30,7 +30,7 @@
     }
   ]
 }</pre>
-<h2>Limits</h2><p>The optional <code>limit</code> parameter requests 1 to 50 results. More developer features can be added as the Welp Search API develops.</p>
+<h2>Limits</h2><p>The optional <code>limit</code> parameter requests 1 to 50 results. More developer features can be added as the Big-A Search API develops.</p>
 </main><footer>Copyright Big-A 2024-2026</footer>
 <script>const b=document.getElementById('generateButton'),o=document.getElementById('keyOutput');b.addEventListener('click',async()=>{b.disabled=true;o.textContent='Generating...';try{const r=await fetch('/api/key',{method:'POST'}),d=await r.json();if(!r.ok)throw new Error(d.message||'Could not generate key');o.textContent=d.api_key}catch(e){o.textContent=e.message}finally{b.disabled=false}});</script>
 </body></html>
