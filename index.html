@@ -29,9 +29,17 @@ footer{padding:35px 25px;text-align:center;border-top:1px solid var(--line);colo
 .reveal{opacity:0;transform:translateY(70px) scale(.97);transition:opacity .9s cubic-bezier(.16,.8,.2,1),transform .9s cubic-bezier(.16,.8,.2,1)}.reveal.left{transform:translateX(-80px)}.reveal.right{transform:translateX(80px)}.reveal.visible{opacity:1;transform:none}
 @media(max-width:800px){.nav{top:8px}.nav a:nth-of-type(2){display:none}.cards,.split{grid-template-columns:1fr}.panel{padding:90px 22px}.network{height:430px}.computer{scale:.65}.pc2{scale:.55}.pc3{scale:.5}.display{font-size:clamp(48px,14vw,82px)}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important}.reveal{opacity:1;transform:none;transition:none}}
+
+/* PRECISION CENTERING + NEXT-LEVEL INTERACTION */
+.hero-inner,.panel-inner,.final>div{margin-left:auto;margin-right:auto}.hero-inner{text-align:center}.panel-inner{width:min(1180px,88vw)}.final>div{width:min(1000px,90vw)}
+.search-shell,.results{margin-left:auto;margin-right:auto}.nav{justify-content:center}.nav-logo{object-fit:contain}
+.cursor-glow{position:fixed;width:420px;height:420px;border-radius:50%;pointer-events:none;z-index:-1;background:radial-gradient(circle,rgba(63,139,255,.13),transparent 68%);translate:-50% -50%;transition:opacity .3s}
+.progress-rail{position:fixed;z-index:120;right:12px;top:50%;translate:0 -50%;height:38vh;width:3px;border-radius:4px;background:rgba(66,100,150,.12)}.progress-fill{width:100%;height:0;background:linear-gradient(#61a8ff,#0b57d0);border-radius:4px;box-shadow:0 0 15px rgba(11,87,208,.45)}
+.hero-logo{transition:transform .15s linear}.network{transform-style:preserve-3d;perspective:900px}.network .computer{transition:transform .2s ease}.panel .display{transition:letter-spacing .5s ease}.panel:hover .display{letter-spacing:-.075em}
+@media(max-width:800px){.panel-inner{width:min(100%,94vw)}.progress-rail{display:none}}
 </style>
 </head>
-<body>
+<body><div class="cursor-glow" id="cursorGlow"></div><div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
 <nav class="nav"><img class="nav-logo" src="big-A logo.jpg" alt="Lux logo"><a href="about.html">About</a><button onclick="openModal()">Add a Website</button><a href="api.html">API</a><a href="license.html">License</a></nav>
 <main>
 <section class="hero"><div class="orb one"></div><div class="orb two"></div><div class="hero-inner"><img class="hero-logo" src="big-A logo.jpg" alt="Lux logo"><div class="kicker">Open-source search by Big-A</div><div class="search-shell"><div class="search-form"><input id="searchInput" class="search-input" type="text" placeholder="Search Lux"><button id="searchButton" class="search-button" aria-label="Search">⌕</button></div></div><div id="results" class="results"></div></div><div class="scroll-hint">Explore Lux</div></section>
@@ -48,5 +56,11 @@ async function searchLux(){const input=document.getElementById('searchInput'),ar
 document.getElementById('searchButton').addEventListener('click',searchLux);document.getElementById('searchInput').addEventListener('keydown',e=>{if(e.key==='Enter')searchLux()});
 function openModal(){document.getElementById('addWebsiteModal').style.display='block'}function closeModal(){document.getElementById('addWebsiteModal').style.display='none'}addEventListener('click',e=>{if(e.target.id==='addWebsiteModal')closeModal()});
 const observer=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.14,rootMargin:'0px 0px -50px'});document.querySelectorAll('.reveal').forEach((e,i)=>{e.style.transitionDelay=(i%3)*80+'ms';observer.observe(e)});
+
+const glow=document.getElementById('cursorGlow'),progress=document.getElementById('progressFill'),heroLogo=document.querySelector('.hero-logo'),net=document.querySelector('.network');
+addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px';if(heroLogo){const dx=(e.clientX-innerWidth/2)/innerWidth,dy=(e.clientY-innerHeight/2)/innerHeight;heroLogo.style.transform='translate('+dx*8+'px,'+dy*5+'px)'}});
+function luxScrollFX(){const max=document.documentElement.scrollHeight-innerHeight,p=max?scrollY/max:0;progress.style.height=(p*100)+'%';document.querySelectorAll('.panel').forEach(s=>{const r=s.getBoundingClientRect(),v=Math.max(-1,Math.min(1,(r.top+r.height/2-innerHeight/2)/innerHeight));const inner=s.querySelector('.panel-inner');if(inner)inner.style.transform='translateY('+(-v*12)+'px)'});}
+addEventListener('scroll',luxScrollFX,{passive:true});luxScrollFX();
+if(net){net.addEventListener('pointermove',e=>{const r=net.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;net.style.transform='rotateX('+(-y*3)+'deg) rotateY('+(x*4)+'deg)';net.querySelectorAll('.computer').forEach((pc,i)=>pc.style.transform='translate('+(x*(i+1)*9)+'px,'+(y*(i+1)*7)+'px)')});net.addEventListener('pointerleave',()=>{net.style.transform='';net.querySelectorAll('.computer').forEach(pc=>pc.style.transform='')})}
 </script>
 </body></html>
