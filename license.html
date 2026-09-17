@@ -1,10 +1,34 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lux License</title>
-<style>*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124}nav{display:flex;align-items:center;padding:16px 28px;border-bottom:1px solid #e5e5e5}.brand{font-size:25px;font-weight:700}nav a{color:#0b57d0;text-decoration:none;margin-left:22px}nav a:first-of-type{margin-left:auto}main{max-width:850px;margin:auto;padding:80px 28px 110px}h1{font-size:52px;margin:0 0 18px}h2{font-size:28px;margin-top:55px}p,li{font-size:18px;line-height:1.75;color:#4d5156}.license-box{background:#f7f8f9;border:1px solid #e1e3e6;border-radius:10px;padding:25px;margin:35px 0}a{color:#0b57d0}footer{text-align:center;padding:28px;border-top:1px solid #e5e5e5;color:#70757a}</style></head>
-<body><nav><span class="brand">Lux</span><a href="index.html">Search</a><a href="about.html">About</a><a href="api.html">API</a></nav>
-<main><h1>Lux License</h1><p>Lux is free and open-source software. The project is licensed under the <strong>Apache License, Version 2.0</strong>.</p>
-<div class="license-box"><strong>Apache License 2.0</strong><p>This license allows people to use, copy, modify, and redistribute Lux—including modified versions—subject to the terms and notice requirements of the license.</p></div>
+<style>*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#202124}nav{display:flex;align-items:center;padding:16px 28px;border-bottom:1px solid #e5e5e5}.brand{font-size:25px;font-weight:700}nav a{color:#0b57d0;text-decoration:none;margin-left:22px}nav a:first-of-type{margin-left:auto}main{max-width:850px;margin:auto;padding:80px 28px 110px}h1{font-size:52px;margin:0 0 18px}h2{font-size:28px;margin-top:55px}p,li{font-size:18px;line-height:1.75;color:#4d5156}.license-box{background:#f7f8f9;border:1px solid #e1e3e6;border-radius:10px;padding:25px;margin:35px 0}a{color:#0b57d0}footer{text-align:center;padding:28px;border-top:1px solid #e5e5e5;color:#70757a}
+    /* LUX MOTION SYSTEM */
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+    .reveal { opacity: 0; transform: translateY(52px); transition: opacity .85s cubic-bezier(.2,.75,.2,1), transform .85s cubic-bezier(.2,.75,.2,1); }
+    .reveal.from-top { transform: translateY(-45px); }
+    .reveal.from-left { transform: translateX(-55px); }
+    .reveal.from-right { transform: translateX(55px); }
+    .reveal.visible { opacity: 1; transform: translate(0,0); }
+    @media (prefers-reduced-motion: reduce) { html{scroll-behavior:auto}.reveal,.reveal.visible{opacity:1;transform:none;transition:none} }
+</style></head>
+<body><nav class="reveal from-top"><span class="brand">Lux</span><a href="index.html">Search</a><a href="about.html">About</a><a href="api.html">API</a></nav>
+<main class="reveal"><h1>Lux License</h1><p>Lux is free and open-source software. The project is licensed under the <strong>Apache License, Version 2.0</strong>.</p>
+<div class="license-box reveal from-left"><strong>Apache License 2.0</strong><p>This license allows people to use, copy, modify, and redistribute Lux—including modified versions—subject to the terms and notice requirements of the license.</p></div>
 <h2>Why open source?</h2><p>Lux is intended to be understandable as well as useful. Keeping the source available allows people to inspect how the project works, learn from it, contribute improvements, and build on it within the terms of the license.</p>
 <h2>What you need to preserve</h2><p>When redistributing Lux or a modified version, applicable copyright, attribution, license, and notice requirements must be preserved as required by Apache License 2.0.</p>
 <h2>The complete license</h2><p>This page is a plain-language overview, not a replacement for the license itself. The complete legal terms are contained in the <a href="LICENSE">LICENSE file</a> included with the Lux source code.</p></main>
-<footer>Copyright Big-A 2024-2026</footer></body></html>
+<footer class="reveal">Copyright Big-A 2024-2026</footer><script>
+  const luxRevealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        luxRevealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.14, rootMargin: '0px 0px -45px 0px' });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = Math.min((i % 4) * 80, 240) + 'ms';
+    luxRevealObserver.observe(el);
+  });
+</script>
+</body></html>
