@@ -1,24 +1,24 @@
-# Big-A Search
+# Lux
 
-**Big-A Search** is an independent search engine created by Big-A.
+**Lux** is an independent search engine created by Big-A.
 
-Big-A Search uses its own crawler to visit websites and build a searchable index of webpages. The project is continually growing as more websites are added.
+Lux uses its own crawler to visit websites and build a searchable index of webpages. The project is continually growing as more websites are added.
 
 ## Add a Website
 
-Want a website included in Big-A Search?
+Want a website included in Lux?
 
-Instructions for adding a website are available on the **official Big-A Search website**.
+To propose a website, use GitHub's editor for `data/sites.json`, add the site's main domain, and submit the change for review.
 
-## Big-A Search API
+## Lux API
 
-Big-A Search now includes an experimental API for searching the Big-A index from other websites and programs.
+Lux now includes an experimental API for searching the Big-A index from other websites and programs.
 
 The API includes an account-free API-key generator and a JSON search endpoint. See `api.html` for the API page and documentation.
 
 ## Development
 
-Big-A Search is actively being developed and improved. New websites and search features will continue to be added.
+Lux is actively being developed and improved. New websites and search features will continue to be added.
 
 ## License
 
